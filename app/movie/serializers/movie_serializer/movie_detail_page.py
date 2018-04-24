@@ -1,3 +1,4 @@
+from django.db import connection
 from rest_framework import serializers
 
 from ...models import Movie, UserToMovie
@@ -63,6 +64,9 @@ class MovieDetailSerializer(serializers.ModelSerializer):
         rating_cnt = UserToMovie.objects.filter(movie=obj, rating__isnull=False).count()
         want_movie_cnt = UserToMovie.objects.filter(movie=obj, user_want_movie=True).count()
         comment_cnt = UserToMovie.objects.filter(movie=obj).exclude(comment='').count()
+        # for query in connection.queries:
+        #     print(f'query >> {query}')
+        # print('connection.queries cnt >> ', len(connection.queries))
         movie_eval_info = {
             'rating_cnt': rating_cnt,
             'want_movie_cnt': want_movie_cnt,
